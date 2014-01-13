@@ -1,0 +1,130 @@
+﻿@*@model IEnumerable<CA3.Product>*@
+@model PagedList.IPagedList<CA3.Product>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().SupplierID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().CategoryID)
+        </th>
+@*        <th>
+            @Html.DisplayNameFor(model => model.QuantityPerUnit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UnitsInStock)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.First().UnitsOnOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ReorderLevel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Discontinued)
+        </th>
+           <th>
+            Supplier
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SupplierID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CategoryID)
+        </td>
+       @* <td>
+            @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitsInStock)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitsOnOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReorderLevel)
+        </td>
+        <td>
+            @if (item.Discontinued == true)
+            {
+                String.Format("Product has been discontinued");
+            }
+            else
+            {
+            @Html.DisplayFor(modelItem => item.Discontinued)
+            }
+        </td>
+@*        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProductID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ProductID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProductID })
+        </td>*@
+
+        <td>
+         @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+    @*Used for Paganation *@
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "Index", new {page = 1})
+        @Html.Raw(" ");
+        @Html.ActionLink("< Prev", "Index", new {page = Model.PageNumber -1})
+    }
+    else 
+    {
+        @:<<
+        @Html.Raw(" ");
+        @:< Prev   
+    }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Next >", "Index", new{page = Model.PageNumber + 1})
+        @Html.Raw(" ");
+        @Html.ActionLink(">>", "Index", new{page = Model.PageCount}) 
+    }
+    else
+    {
+       @:Next >
+       @Html.Raw(" ");
+       @:>>  
+    }
+
+</div>
